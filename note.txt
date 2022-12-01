@@ -1,0 +1,127 @@
+alaina * ao_@ table ka field=valeur;
+
+String getType(Object[] lo, String field) {
+        String val = new String();
+        String attr = lo[0].toString();
+        String[] fieldsAndTypes = attr.split("\\,");
+        for(int i = 0; i<lo.length; i++) {
+            for(int j = 0; j<fieldsAndTypes.length  ; j++) {
+                String[] fields = fieldsAndTypes[i].split("\\ ");
+                if(field.compareToIgnoreCase(fields[1]) == 0) {
+                    return fields[0];
+                }
+            }
+        }
+    return val;
+    }
+
+    String to_ecriture(Object[] lo, String field) {
+        String[] attr_select = field.split("\\,");
+        String s = "";
+        for(int i = 0; i<attr_select.length; i++) {
+            s = s + (getType(lo, attr_select[i]) + " " + attr_select[i]) + ",";
+        }
+        int len = s.length();
+        s = s.substring(0, len-1);
+        //System.out.println(s);
+    return s;
+    }
+
+
+    public Object[] select(Object[] lo, String field) {
+        //System.out.println("tafa");
+        Vector v = new Vector();
+        String[] attr_select = field.split("\\,");
+        String attr = lo[0].toString();
+        String ecriture = to_ecriture(lo, field);
+        v.add(ecriture);
+        String[] fieldsAndTypes = attr.split("\\,");
+
+        for(int j = 1; j < lo.length; j++) {
+            String[] data = lo[j].toString().split("\\,");
+            //System.out.println(lo[j]);
+            for(int i = 0; i < fieldsAndTypes.length; i++) {
+                String[] fields = fieldsAndTypes[i].split("\\ ");
+                for(int u = 0; u<attr_select.length; u++) {
+                    //System.out.println(attr_select[u]+" "+fields[1] );
+                    // field[0] : type anle field
+                    // field[1] : nom anle field
+                    if(attr_select[u].compareToIgnoreCase(fields[1]) == 0) {
+                        String type = fields[0];
+                        String value = data[i]; 
+                        System.out.println(data[i]);
+                        v.add(data[i]);
+                        //System.out.println( fields[1] + " : " + data[i] );
+                    }
+                }
+            }
+        }
+    return v.toArray();
+    }
+
+public void aff_select(Object[] lo, String field) {
+        for (int i = 0; i < lo.length; i++) {
+            aff_o(lo[i], field);
+        }
+    }
+
+public void aff_o(Object o) {
+        try {
+            //System.out.println("hahaa");
+            Field[] fields = o.getClass().getDeclaredFields();
+            //System.out.println(o.getClass().getDeclaredFields()[0]);
+            System.out.println("---------------------");
+            for(int i = 0; i<fields.length; i++) {
+                fields[i].setAccessible(true);
+                System.out.println( fields[i].getName() + " : " + fields[i].get(o));
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void aff_o(Object o, String field) {
+        try {
+            //System.out.println("hahaa");
+            Field[] fields = o.getClass().getDeclaredFields();
+            //System.out.println(o.getClass().getDeclaredFields()[0]);
+            System.out.println("---------------------");
+            String[] split = field.split("\\,");
+            for(int i = 0; i<fields.length; i++) {
+                fields[i].setAccessible(true);
+                for(int j = 0; j<split.length; j++) {
+                    if(split[j].compareToIgnoreCase(fields[i].getName()) == 0) {
+                        System.out.println( fields[i].getName() + " : " + fields[i].get(o));
+                    }
+                }     
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+public Object[] find(Object[][] tables, String nom_table){
+        Vector val = new Vector();
+        for(int i = 0; i<tables.length; i++) {
+            for (int j = 0; j < tables[i].length; j++) {
+                if(nom_table.compareToIgnoreCase( tables[i][j].getClass().getSimpleName() ) == 0) {
+                    
+                    //System.out.println(tables[i][j].getClass().getSimpleName() );
+                    return tables[i];
+                }
+            }
+        }
+        Object[] obj = val.toArray();
+    return obj;
+    }
+{"=","!=","<=",">=","<",">","misy"};
+int countNbJoin(String request_join) {
+        int count = 0;
+        String[] split = request_join.split("\\,");
+        for(int i = 0; i<split.length; i++) {
+            if(split[i].compareToIgnoreCase(jointure) == 0) {
+                count ++;
+            }
+        }
+    return count;
+    }

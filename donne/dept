@@ -1,0 +1,5 @@
+int numero_dept,int numero_emp,String location
+1,10,windows
+2,11,linux
+3,14,window
+4,16,linux
